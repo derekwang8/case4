@@ -26,6 +26,16 @@ def submit_survey():
 
     try:
         submission = SurveySubmission(**payload)
+
+        if not submission.user_agent:
+            submission.user_agent = request.headers.get("User-Agent")
+
+        record = submission.to_safe_dict()
+
+        record["received_at"] = datetime.now(timezone.utc).isoformat()
+        record["ip"] = request.remote_addr
+        record["user_agent"] = submission.user_agent
+
     except ValidationError as ve:
         return jsonify({"error": "validation_error", "detail": ve.errors()}), 422
 
