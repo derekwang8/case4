@@ -41,7 +41,15 @@ class SurveySubmission(BaseModel):
         return v
 
         
-#Good example of inheritance
-class StoredSurveyRecord(SurveySubmission):
+class StoredSurveyRecord(BaseModel):
+    name: str
+    email: str   # already hashed
+    age: str     # already hashed
+    consent: bool
+    rating: int
+    comments: Optional[str]
+    source: str = "other"
+    user_agent: Optional[str]
+    submission_id: Optional[str] = None
     received_at: datetime
     ip: str
